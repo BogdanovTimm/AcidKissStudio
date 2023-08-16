@@ -1,0 +1,27 @@
+services:
+    backend-mysql-database:
+        image: mysql:latest
+        environment:
+            - MYSQL_ROOT_PASSWORD=pass
+            # - MYSQL_DATABASE=securecapita
+            - MYSQL_USER=root
+            - MYSQL_PASSWORD=pass
+    backend-applicaiton:
+        environment:
+            SPRING_DATASOURCE_URL: jdbc:mysql://backend-mysql-database:3306/securecapita
+        depends_on:
+            - backend-mysql-database
+        container_name: securecapitacontainer
+        build:
+            context: .
+            args:
+                CONTAINER_PORT: 8000
+        image: securecapita:v1
+        restart: unless-stopped
+        #env_file:
+        #    - ${ENV_FILE}
+        #    - ./.env.dev
+        expose:
+            - 8000
+        ports:
+            - 8000:8000

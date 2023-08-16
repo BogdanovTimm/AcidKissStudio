@@ -1,0 +1,35 @@
+jwt:
+    secret: mysupercomplexsecret
+
+server:
+    error:
+        path: /user/error
+        whitelabel:
+            enabled: false
+
+spring:
+    #  autoconfigure:
+    #    exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+    datasource:
+        #url: jdbc:mysql://192.168.1.216:3306/securecapita
+        # url: jdbc:mysql://localhost:3306/securecapita
+        url: jdbc:mysql://192.168.0.102:3306/securecapita?enabledTLSProtocols=TLSv1.2
+        password: Analsex1488!
+        username: tim
+        hikari:
+           max-lifetime: 20000
+    jpa:
+        database-platform: org.hibernate.dialect.MySQL8InnoDBDialect
+        generate-ddl: true
+        show-sql: true
+        hibernate:
+            ddl-auto: update
+        properties:
+            hibernate:
+                globally_quoted_indentifiers: true
+                dialect: org.hibernate.dialect.MySQL8Dialect
+                format_sql: true
+    sql:
+        init:
+            mode: never
+            continue-on-error: false

@@ -39,20 +39,24 @@ public class Application
      </ol>
      </p>
      */
-    @Bean
+   @Bean
     public CorsFilter corsFilter ()
     {
         UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource ();
         CorsConfiguration corsConfiguration = new CorsConfiguration ();
         corsConfiguration.setAllowCredentials (true);
-        corsConfiguration.setAllowedOrigins (List.of ("*"
-                                                      /*
+        corsConfiguration.setAllowedOrigins (List.of (
                                                       "http://localhost:4200",
                                                       "http://localhost:3000",
                                                       "http://localhost:80", // nginx server
                                                       "http://localhost", // allows every HTTP-Request from all ports from localhost
-                                                      "http://securecapita.org"
-                                                      */
+                                                      "https://localhost",
+                                                      "http://192.168.0.102",
+                                                      "https://192.168.0.102",
+                                                      "http://185.43.5.52",
+                                                      "https://185.43.5.52",
+                                                      "http://timofeimen.fvds.ru",
+                                                      "https://timofeimen.fvds.ru"
                                                      ));
         //corsConfiguration.setAllowedOrigins(Arrays.asList("*"));
         corsConfiguration.setAllowedHeaders (Arrays.asList ("Origin",

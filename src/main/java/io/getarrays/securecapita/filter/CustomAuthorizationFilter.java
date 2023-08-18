@@ -40,7 +40,17 @@ public class CustomAuthorizationFilter
                                                    "/api/v1/user/verify/code",
                                                    "/api/v1/user/register",
                                                    "/api/v1/user/refresh/token",
-                                                   "/api/v1/user/image"
+                                                   "/api/v1/user/image",
+                                                   // #
+                                                   "/#/api/v1/user/new/password",
+                                                   "/#/api/v1/user/login",
+                                                   "/#/api/v1/user/verify/code",
+                                                   "/#/api/v1/user/register",
+                                                   "/#/api/v1/user/refresh/token",
+                                                   "/#/api/v1/user/image",
+                                                   "/#",
+                                                   "/#/login",
+                                                   "/#/register"
     };
     private static final String HTTP_OPTIONS_METHOD = "OPTIONS";
     private final TokenProvider tokenProvider;

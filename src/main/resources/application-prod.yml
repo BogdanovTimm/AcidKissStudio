@@ -2,9 +2,12 @@ spring:
     #  autoconfigure:
     #    exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
     datasource:
+        #url: jdbc:mysql://192.168.0.102:3306/securecapita
+        #password: Analsex1488!
+        #username: tim
         url: jdbc:mysql://localhost:3306/securecapita
-        password: Analsex1488!
-        username: tim
+        password: test123!
+        username: test
         
     jpa:
         database-platform: org.hibernate.dialect.MySQL8InnoDBDialect

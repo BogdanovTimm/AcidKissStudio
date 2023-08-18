@@ -47,7 +47,10 @@ public class EmailServiceImpl
         }
     }
     
-    private String getEmailMessage (String firstName, String verificationUrl, VerificationType verificationType)
+    private String getEmailMessage (String firstName,
+                                    String verificationUrl,
+                                    VerificationType verificationType
+                                   )
     {
         switch (verificationType)
         {
@@ -63,14 +66,3 @@ public class EmailServiceImpl
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-

@@ -56,10 +56,7 @@ import static org.springframework.web.servlet.support.ServletUriComponentsBuilde
 @Repository
 @RequiredArgsConstructor
 @Slf4j
-public class UserRepositoryImpl
-        implements UserRepository<User>,
-                   UserDetailsService
-{
+public class UserRepositoryImpl implements UserRepository<User>, UserDetailsService {
     /**
      Format for Date in MySQL
      */

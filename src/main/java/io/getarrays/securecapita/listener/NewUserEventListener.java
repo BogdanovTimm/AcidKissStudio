@@ -8,9 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import static io.getarrays.securecapita.utils.RequestUtils.getDevice;
-import static io.getarrays.securecapita.utils.RequestUtils.getIpAddress;
-
 /**
  Class that automatically calls onNewUserEvent () every time when NewUserEvent is created
  */

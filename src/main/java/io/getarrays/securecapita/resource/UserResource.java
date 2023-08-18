@@ -82,10 +82,12 @@ public class UserResource
      </ol>
      </p>
      */
+    
     @PostMapping ("/login")
     public ResponseEntity<HttpResponse> login (@RequestBody
                                                @Valid
-                                               LoginForm loginForm)
+                                               LoginForm loginForm
+                                              )
     {
         UserDTO user = authenticate (loginForm.getEmail (), loginForm.getPassword ());
         return user.isUsingMfa () ? sendVerificationCode (user) : sendResponse (user);
@@ -109,7 +111,8 @@ public class UserResource
     @PostMapping ("/register")
     public ResponseEntity<HttpResponse> saveUser (@RequestBody
                                                   @Valid
-                                                  User user)
+                                                  User user
+                                                 )
     throws InterruptedException
     {
         // TimeUnit.SECONDS.sleep (4);

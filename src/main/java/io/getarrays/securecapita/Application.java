@@ -11,6 +11,7 @@ import org.springframework.web.filter.CorsFilter;
 import java.util.List;
 import java.util.Arrays;
 
+// Anus
 @SpringBootApplication //(exclude = { SecurityAutoConfiguration.class })
 public class Application
 {

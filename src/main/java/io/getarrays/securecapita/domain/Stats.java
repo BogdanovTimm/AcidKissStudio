@@ -17,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_DEFAULT;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-//@JsonInclude(NON_DEFAULT) // We disable this beacause if either of these variables = 0, then it will not be sent back to frontend server
+//@JsonInclude(NON_DEFAULT) // We disable this beacause if any of these variables will be equal to 0, then it will not be sent back to frontend server
 public class Stats {
     private int totalCustomers;
     private int totalInvoices;

@@ -7,13 +7,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- Mapper from SQL output to Role java class
+ * Mapper from SQL output to Role java class
  */
 public class StatsRowMapper implements RowMapper<Stats> {
     /**
-     <p>
-     Maps output from SQL to User java class
-     </p>
+     * <p>
+     * Maps output from SQL to User java class
+     * </p>
      */
     @Override
     public Stats mapRow(ResultSet resultSet, int rowNum) throws SQLException {

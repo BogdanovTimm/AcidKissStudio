@@ -82,7 +82,6 @@ public class UserResource
      </ol>
      </p>
      */
-    
     @PostMapping ("/login")
     public ResponseEntity<HttpResponse> login (@RequestBody
                                                @Valid

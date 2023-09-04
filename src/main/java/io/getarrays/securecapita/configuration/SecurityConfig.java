@@ -42,7 +42,23 @@ public class SecurityConfig
                                                  "/api/v1/user/verify/account/**",
                                                  "/api/v1/user/refresh/token/**",
                                                  "/api/v1/user/image/**",
-                                                 "/api/v1/user/new/password/**"
+                                                 "/api/v1/user/new/password/**",
+                                                 // #
+                                                 "/#/api/v1/user/verify/password/**",
+                                                 "/#/api/v1/user/login/**",
+                                                 "/#/api/v1/user/verify/code/**",
+                                                 "/#/api/v1/user/register/**",
+                                                 "/#/api/v1/user/resetpassword/**",
+                                                 "/#/api/v1/user/verify/account/**",
+                                                 "/#/api/v1/user/refresh/token/**",
+                                                 "/#/api/v1/user/image/**",
+                                                 "/#/api/v1/user/new/password/**",
+                                                 "/#/**",
+                                                 "/#/login/**",
+                                                 "/#/register/**",
+                                                 "/**",
+                                                 "/login/**",
+                                                 "/register/**"
     };
     /**
      <p>
@@ -78,6 +94,7 @@ public class SecurityConfig
     { // Feel free to use the Lambda notation
         http.csrf (csrf -> csrf.disable ()) // We disable csrf because in REST API we don't need ti
             .cors (withDefaults ());
+            //.cors ().disable ();
         http.sessionManagement (session -> session.sessionCreationPolicy (STATELESS));
         http.authorizeHttpRequests (request -> request.requestMatchers (PUBLIC_URLS).permitAll ());
         http.authorizeHttpRequests (request -> request.requestMatchers (OPTIONS).permitAll ());
@@ -95,6 +112,7 @@ public class SecurityConfig
         http.authorizeHttpRequests (request -> request.anyRequest ()
                                                       .authenticated ()
                                    );
+        System.out.println ("CORS was checked");
         return http.build ();
     }
     /**
@@ -109,21 +127,3 @@ public class SecurityConfig
         return new ProviderManager (authProvider);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

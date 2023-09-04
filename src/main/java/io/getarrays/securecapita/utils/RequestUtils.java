@@ -1,12 +1,6 @@
 package io.getarrays.securecapita.utils;
 
 import jakarta.servlet.http.HttpServletRequest;
-import nl.basjes.parse.useragent.UserAgent;
-import nl.basjes.parse.useragent.UserAgentAnalyzer;
-
-import static nl.basjes.parse.useragent.UserAgent.AGENT_NAME;
-import static nl.basjes.parse.useragent.UserAgent.DEVICE_NAME;
-import static nl.basjes.parse.useragent.UserAgent.OPERATING_SYSTEM_NAME;
 
 /**
  @author Junior RT
@@ -20,19 +14,22 @@ public class RequestUtils
     public static String getIpAddress (HttpServletRequest request)
     {
         String ipAddress = "Unknown IP";
-        if (request != null)
-        {
-            ipAddress = request.getHeader (X_FORWARDED_FOR_HEADER);
-            if (ipAddress == null || "".equals (ipAddress))
-            {
-                ipAddress = request.getRemoteAddr ();
+        if (request != null) {
+            ipAddress = request.getHeader(X_FORWARDED_FOR_HEADER);
+            if (ipAddress == null || "".equals(ipAddress)) {
+                ipAddress = request.getRemoteAddr();
             }
         }
         return ipAddress;
     }
     
+    /**
+     * Gets user's device from HTTP-Request (need to be checked)
+     */
     public static String getDevice (HttpServletRequest request)
     {
+        return "Test";
+        /*
         UserAgentAnalyzer userAgentAnalyzer = UserAgentAnalyzer.newBuilder ()
                                                                .hideMatcherLoadStats ()
                                                                .withCache (1000)
@@ -40,5 +37,6 @@ public class RequestUtils
         UserAgent agent = userAgentAnalyzer.parse (request.getHeader (USER_AGENT_HEADER));
         //return agent.getValue(OPERATING_SYSTEM_NAME) + " - " + agent.getValue(AGENT_NAME) + " - " + agent.getValue(DEVICE_NAME);
         return agent.getValue (AGENT_NAME) + " - " + agent.getValue (DEVICE_NAME);
+        */
     }
 }

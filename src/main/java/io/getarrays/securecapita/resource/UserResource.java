@@ -26,8 +26,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.concurrent.TimeUnit;
-
 import static io.getarrays.securecapita.dtomapper.UserDTOMapper.toUser;
 import static io.getarrays.securecapita.enumeration.EventType.*;
 import static io.getarrays.securecapita.utils.ExceptionUtils.processError;
@@ -85,7 +83,8 @@ public class UserResource
     @PostMapping ("/login")
     public ResponseEntity<HttpResponse> login (@RequestBody
                                                @Valid
-                                               LoginForm loginForm)
+                                               LoginForm loginForm
+                                              )
     {
         UserDTO user = authenticate (loginForm.getEmail (), loginForm.getPassword ());
         return user.isUsingMfa () ? sendVerificationCode (user) : sendResponse (user);
@@ -109,7 +108,8 @@ public class UserResource
     @PostMapping ("/register")
     public ResponseEntity<HttpResponse> saveUser (@RequestBody
                                                   @Valid
-                                                  User user)
+                                                  User user
+                                                 )
     throws InterruptedException
     {
         // TimeUnit.SECONDS.sleep (4);

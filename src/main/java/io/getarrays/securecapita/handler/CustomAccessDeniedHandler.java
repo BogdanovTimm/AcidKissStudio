@@ -27,39 +27,23 @@ public class CustomAccessDeniedHandler
         implements AccessDeniedHandler
 {
     @Override
-    public void handle (HttpServletRequest request,
+    public void handle(HttpServletRequest request,
                         HttpServletResponse response,
                         AccessDeniedException accessDeniedException
-                       )
+                      )
     throws IOException, ServletException
     {
-        HttpResponse httpResponse = HttpResponse.builder ()
-                                                .timeStamp (now ().toString ())
-                                                .reason ("You don't have enough permission")
-                                                .status (FORBIDDEN)
-                                                .statusCode (FORBIDDEN.value ())
-                                                .build ();
-        response.setContentType (APPLICATION_JSON_VALUE);
-        response.setStatus (FORBIDDEN.value ());
-        OutputStream out = response.getOutputStream ();
-        ObjectMapper mapper = new ObjectMapper ();
-        mapper.writeValue (out, httpResponse);
-        out.flush ();
+        HttpResponse httpResponse = HttpResponse.builder()
+                                                .timeStamp(now().toString ())
+                                                .reason("You don't have enough permission")
+                                                .status(FORBIDDEN)
+                                                .statusCode(FORBIDDEN.value ())
+                                                .build();
+        response.setContentType(APPLICATION_JSON_VALUE);
+        response.setStatus(FORBIDDEN.value());
+        OutputStream out = response.getOutputStream();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.writeValue(out, httpResponse);
+        out.flush();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

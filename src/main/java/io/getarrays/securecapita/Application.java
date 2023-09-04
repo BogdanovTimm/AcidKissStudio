@@ -78,7 +78,12 @@ public class Application
                                                             "Access-Control-Allow-Origin",
                                                             "Access-Control-Allow-Credentials",
                                                             "File-Name"));
-        corsConfiguration.setAllowedMethods (Arrays.asList ("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        corsConfiguration.setAllowedMethods (Arrays.asList ("GET",
+                                                            "POST",
+                                                            "PUT",
+                                                            "PATCH",
+                                                            "DELETE",
+                                                            "OPTIONS"));
         urlBasedCorsConfigurationSource.registerCorsConfiguration ("/**", corsConfiguration);
         return new CorsFilter (urlBasedCorsConfigurationSource);
     }

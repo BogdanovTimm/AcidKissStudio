@@ -1,22 +1,3 @@
-####################################################################
-###                                                             ####
-### Author: Junior RT                                           ####
-### License: Get Arrays LLC License (https://getarrays.io)      ####
-### Date: August 20th, 2022                                     ####
-### Version: 1.0                                                ####
-###                                                             ####
-####################################################################
-
-/*
- * --- General Rules ---
- * Use underscore_names instead of camelCase
- * Table names should be plural
- * Spell out id fields (item_id instead of id)
- * Don't use ambiguous column names
- * Name foreign key columns the same as the columns they refer to
- * Use caps for all SQL queries
- */
-
 CREATE SCHEMA IF NOT EXISTS securecapita;
 
 SET NAMES 'UTF8MB4';

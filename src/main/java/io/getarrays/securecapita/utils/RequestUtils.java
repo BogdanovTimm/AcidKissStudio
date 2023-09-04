@@ -1,12 +1,6 @@
 package io.getarrays.securecapita.utils;
 
 import jakarta.servlet.http.HttpServletRequest;
-import nl.basjes.parse.useragent.UserAgent;
-import nl.basjes.parse.useragent.UserAgentAnalyzer;
-
-import static nl.basjes.parse.useragent.UserAgent.AGENT_NAME;
-import static nl.basjes.parse.useragent.UserAgent.DEVICE_NAME;
-import static nl.basjes.parse.useragent.UserAgent.OPERATING_SYSTEM_NAME;
 
 /**
  @author Junior RT

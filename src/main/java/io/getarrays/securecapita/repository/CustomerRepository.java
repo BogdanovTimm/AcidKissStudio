@@ -7,15 +7,17 @@ import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
- @author Junior RT
- @version 1.0
- @license Get Arrays, LLC (https://getarrays.io)
- @since 5/11/2023 */
+ * @author Junior RT
+ * @version 1.0
+ * @license Get Arrays, LLC (https://getarrays.io)
+ * @since 5/11/2023
+ */
 public interface CustomerRepository
-        extends PagingAndSortingRepository<Customer, Long>, //
-                ListCrudRepository<Customer, Long>
+                                    extends
+                                    PagingAndSortingRepository<Customer, Long>, //
+                                    ListCrudRepository<Customer, Long>
 {
-    Page<Customer> findByNameContaining (String name,
-                                         Pageable pageable
-                                        );
+        Page<Customer> findByNameContaining (String name,
+                                             Pageable pageable
+        );
 }

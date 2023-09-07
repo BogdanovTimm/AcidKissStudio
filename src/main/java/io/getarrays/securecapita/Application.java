@@ -64,7 +64,6 @@ public CorsFilter corsFilter()
                                                 "https://185.43.5.52",
                                                 "http://timofeimen.fvds.ru",
                                                 "https://timofeimen.fvds.ru"));
-    // corsConfiguration.setAllowedOrigins(Arrays.asList("*"));
     corsConfiguration.setAllowedHeaders(Arrays.asList("Origin",
                                                       "Access-Control-Allow-Origin",
                                                       "Content-Type",

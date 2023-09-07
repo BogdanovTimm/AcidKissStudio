@@ -92,8 +92,7 @@ private static final String[] PUBLIC_URLS = {"/api/v1/user/verify/password/**",
  * </p>
  */
 @Bean
-public SecurityFilterChain filterChain(HttpSecurity http)
-                                                          throws Exception
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception
 {
     http.csrf(csrf->csrf.disable()) // We disable csrf because in REST API we don't need ti
         .cors(withDefaults());
@@ -102,10 +101,12 @@ public SecurityFilterChain filterChain(HttpSecurity http)
     http.authorizeHttpRequests(request->request.requestMatchers(OPTIONS).permitAll());
     http.authorizeHttpRequests(request->request.requestMatchers(DELETE,
                                                                 "/api/v1/user/delete/**")
-                                               .hasAuthority("DELETE:USER"));
+                                               .hasAuthority("DELETE:USER")
+    );
     http.authorizeHttpRequests(request->request.requestMatchers(DELETE,
                                                                 "/api/v1/customer/delete/**")
-                                               .hasAuthority("DELETE:CUSTOMER"));
+                                               .hasAuthority("DELETE:CUSTOMER")
+    );
     http.exceptionHandling(exception->exception.accessDeniedHandler(customAccessDeniedHandler) // Sets custom handler for Access Denied Error
                                                .authenticationEntryPoint(customAuthenticationEntryPoint)); // Sets custom handler for non-logged user
     http.addFilterBefore(customAuthorizationFilter, UsernamePasswordAuthenticationFilter.class); // Adds filter that checks user's permissions for every HTTP-Request

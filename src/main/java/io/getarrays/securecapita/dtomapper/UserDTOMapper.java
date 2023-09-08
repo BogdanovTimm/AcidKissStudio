@@ -30,7 +30,8 @@ public class UserDTOMapper {
     /**
      Creates a UserDTO based on given User and its given roles
      */
-    public static UserDTO fromUser(User user, Role role) {
+    public static UserDTO fromUserWithRole(User user, Role role)
+    {
         UserDTO userDTO = new UserDTO();
         BeanUtils.copyProperties(user, userDTO);
         userDTO.setRoleName(role.getName());

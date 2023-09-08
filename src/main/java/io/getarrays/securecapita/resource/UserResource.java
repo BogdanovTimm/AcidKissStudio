@@ -2,7 +2,7 @@ package io.getarrays.securecapita.resource;
 
 import io.getarrays.securecapita.domain.HttpResponse;
 import io.getarrays.securecapita.domain.User;
-import io.getarrays.securecapita.domain.UserPrincipal;
+import io.getarrays.securecapita.domain.UserPlusItsRoles;
 import io.getarrays.securecapita.dto.UserDTO;
 import io.getarrays.securecapita.event.NewUserEvent;
 import io.getarrays.securecapita.exception.ApiException;
@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,13 +31,12 @@ import static io.getarrays.securecapita.dtomapper.UserDTOMapper.toUser;
 import static io.getarrays.securecapita.enumeration.EventType.*;
 import static io.getarrays.securecapita.utils.ExceptionUtils.processError;
 import static io.getarrays.securecapita.utils.UserUtils.getAuthenticatedUser;
-import static io.getarrays.securecapita.utils.UserUtils.getLoggedInUser;
+// import static io.getarrays.securecapita.utils.UserUtils.getLoggedInUser;
 import static java.time.LocalDateTime.now;
 import static java.util.Map.of;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
-import static org.springframework.security.authentication.UsernamePasswordAuthenticationToken.unauthenticated;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentContextPath;
 
 /**
@@ -48,20 +48,27 @@ import static org.springframework.web.servlet.support.ServletUriComponentsBuilde
 public class UserResource
 {
 
-
-
 private static final String TOKEN_PREFIX = "Bearer ";
+
 private final UserService userService;
+
 private final RoleService roleService;
+
 private final EventService eventService;
+
 private final AuthenticationManager authenticationManager;
+
 private final TokenProvider tokenProvider;
+
 private final HttpServletRequest request;
+
 private final HttpServletResponse response;
+
 /**
  * Class that creates a new NewUserEvent in such a way that NewUserEventListener will know about it
  */
 private final ApplicationEventPublisher publisher;
+
 /**
  * <p>
  * Handles POST-HTTP-Request for signing the user in, that is sent to website.com/login:
@@ -85,15 +92,15 @@ private final ApplicationEventPublisher publisher;
  */
 @PostMapping("/login")
 public ResponseEntity<HttpResponse> login(@RequestBody
-@Valid
-LoginForm loginForm
-)
+/*                                      */@Valid
+/*                                      */LoginForm loginForm)
 {
-    UserDTO user = authenticate(loginForm.getEmail(), loginForm.getPassword());
-    return user.isUsingMfa() ? sendVerificationCode(user) : sendResponse(user);
+    UserDTO user = authenticate(loginForm.getEmail(),
+                                loginForm.getPassword());
+    return user.isUsingMfa()
+    ? sendVerificationCode(user)
+    : sendResponse(user);
 }
-
-
 
 /**
  * <p>
@@ -112,16 +119,15 @@ LoginForm loginForm
  * </p>
  */
 @PostMapping("/register")
-public ResponseEntity<HttpResponse> saveUser(@RequestBody @Valid
-User user
-)
-  throws InterruptedException
+public ResponseEntity<HttpResponse> saveUser(@RequestBody
+/*                                         */@Valid
+/*                                         */User user)
+                                                        throws InterruptedException
 {
     // TimeUnit.SECONDS.sleep (4);
     UserDTO userDto = userService.createUser(user);
     return ResponseEntity.created(getUri())
-                         .body(
-                               HttpResponse.builder()
+                         .body(HttpResponse.builder()
                                            .timeStamp(now().toString())
                                            .data(of("user", userDto)) // Returns JSON representation of given [UserDto] (it is not needed in real applications)
                                            .message(String.format("User account created for user %s", user.getFirstName()))
@@ -129,8 +135,6 @@ User user
                                            .statusCode(CREATED.value())
                                            .build());
 }
-
-
 
 /**
  * <p>
@@ -173,8 +177,6 @@ public ResponseEntity<HttpResponse> profile(Authentication authentication)
                          );
 }
 
-
-
 @PatchMapping("/update")
 public ResponseEntity<HttpResponse> updateUser(@RequestBody
 @Valid
@@ -201,9 +203,6 @@ UpdateForm user
 }
 
 // START - To reset password when user is not logged in
-
-
-
 /**
  * <p>
  * Handles GET-HTTP-Request for authenticate user if he has enabled 2 factor authentication,
@@ -250,8 +249,6 @@ String email,
                                            .build());
 }
 
-
-
 /**
  * <p>
  * Handles GET-HTTP-Request when somebody unauthorized asks to change password for some user based on a given email:
@@ -297,8 +294,6 @@ String email)
                                            .build());
 }
 
-
-
 /**
  * <p>
  * Handles GET-HTTP-Request for URL that verifies account after registration:
@@ -336,8 +331,6 @@ String key)
                                            .statusCode(OK.value())
                                            .build());
 }
-
-
 
 /**
  * <p>
@@ -381,8 +374,6 @@ String key)
                                            .build());
 }
 
-
-
 /**
  * <p>
  * Asks UserRepository to:
@@ -420,10 +411,8 @@ public ResponseEntity<HttpResponse> resetPasswordWithKey(@RequestBody @Valid
                                            .statusCode(OK.value())
                                            .build());
 }
-
-
-
 // END - To reset password when user is not logged in
+
 /**
  * <ol>
  * <li>Asks UserUtils to receive UserDTO of current logged user
@@ -465,8 +454,6 @@ public ResponseEntity<HttpResponse> updatePassword(Authentication authentication
                                            .build());
 }
 
-
-
 @PatchMapping("/update/role/{roleName}")
 public ResponseEntity<HttpResponse> updateUserRole(Authentication authentication,
                                                    @PathVariable("roleName")
@@ -492,8 +479,6 @@ public ResponseEntity<HttpResponse> updateUserRole(Authentication authentication
                                            .statusCode(OK.value())
                                            .build());
 }
-
-
 
 /**
  * Updating whether user's account is enabled and non-locked.
@@ -524,8 +509,6 @@ public ResponseEntity<HttpResponse> updateAccountSettings(Authentication authent
                                            .build());
 }
 
-
-
 /**
  * Handles enabling 2-Factor authorization by user
  */
@@ -552,8 +535,6 @@ public ResponseEntity<HttpResponse> toggleMfa(Authentication authentication)
                                            .statusCode(OK.value())
                                            .build());
 }
-
-
 
 @PatchMapping("/update/image")
 public ResponseEntity<HttpResponse> updateProfileImage(Authentication authentication,
@@ -582,11 +563,8 @@ public ResponseEntity<HttpResponse> updateProfileImage(Authentication authentica
                                            .build());
 }
 
-
-
 @GetMapping(value = "/image/{fileName}",
-            produces = IMAGE_PNG_VALUE
-)
+            produces = IMAGE_PNG_VALUE)
 public byte[] getProfileImage(@PathVariable("fileName")
 String fileName
 )
@@ -594,8 +572,6 @@ String fileName
 {
     return Files.readAllBytes(Paths.get(System.getProperty("user.home") + "/Downloads/images/" + fileName));
 }
-
-
 
 /**
  * <p>
@@ -674,8 +650,6 @@ public ResponseEntity<HttpResponse> refreshToken(HttpServletRequest request)
     }
 }
 
-
-
 /**
  * <p>
  * Checks that JWT-Refresh Token is valid:
@@ -715,8 +689,6 @@ private boolean isHeaderAndTokenValid(HttpServletRequest request)
            );
 }
 
-
-
 /**
  * <p>
  * Handles all HTTP-Requests that are sent to a page on a wepsite that does not exist and returns a HTTP-Response:
@@ -754,46 +726,32 @@ public ResponseEntity<HttpResponse> handleError(HttpServletRequest request) {
 }
 */
 
-
-
 /**
- * <p>
  * Checks given user's email and password and returns UserDTO if all good:
  * <ol>
- * <li>
- * Asks UserService to check whether user with given email exists in a Database and return UserDTO if it exists
- * </li>
- * <li>
- * Asks Authentication Manager to checks given user's email and password
- * </li>
- * <li>
- * Asks UserUtils to return UserDTO
- * </li>
- * <li>
- * Returns UserDTO
- * </li>
- * </ol>
- * </p>
+ * <li>Safes login attempt
+ * <li>Asks Authentication Manager to call UserRepostiory.loadByUsername () to create AuthenticationToken (not to be confused with JWT-Access and JWT-Refresh tokens)
+ * <li>Returns UserDTO with its Role from AuthenticationToken
  */
 private UserDTO authenticate(String email, String password)
 {
-    UserDTO userByEmail = userService.getUserByEmail(email);
+    UserDTO userDTO = userService.getUserByEmail(email); // It is needed only to safe login attempt
     try
     {
-        if(null != userByEmail)
+        if(null != userDTO)
         {
             publisher.publishEvent(new NewUserEvent(email, LOGIN_ATTEMPT));
         }
-        Authentication authentication = authenticationManager.authenticate(unauthenticated(email, password));
-        UserDTO loggedInUser = getLoggedInUser(authentication);
-        if(!loggedInUser.isUsingMfa())
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password)); // Calls UserRepositoryImpl.loadUserByUsername()
+        UserDTO userDTOFPlusItsRolesFomAuthenticationToken = ((UserPlusItsRoles)authentication.getPrincipal()).getUserDTOPlusItsRole();
+        if(!userDTOFPlusItsRolesFomAuthenticationToken.isUsingMfa())
         {
             publisher.publishEvent(new NewUserEvent(email, LOGIN_ATTEMPT_SUCCESS));
         }
-        return loggedInUser;
+        return userDTOFPlusItsRolesFomAuthenticationToken;
     }catch(Exception exception)
     {
-        if(null != userByEmail)
+        if(null != userDTO)
         {
             publisher.publishEvent(new NewUserEvent(email, LOGIN_ATTEMPT_FAILURE));
         }
@@ -802,12 +760,8 @@ private UserDTO authenticate(String email, String password)
     }
 }
 
-
-
 private URI getUri()
 { return URI.create(fromCurrentContextPath().path("/api/v1/user/get/<userId>").toUriString()); }
-
-
 
 /**
  * <p>
@@ -834,18 +788,15 @@ private ResponseEntity<HttpResponse> sendResponse(UserDTO user)
 }
 
 
-
 /**
  * Creates UserPrincipal java class instance
  */
-private UserPrincipal getUserPrincipal(UserDTO user)
+private UserPlusItsRoles getUserPrincipal(UserDTO user)
 {
-    return new UserPrincipal(toUser(userService.getUserByEmail(user.getEmail())),
-                             roleService.getRoleByUserId(user.getId())
+    return new UserPlusItsRoles(toUser(userService.getUserByEmail(user.getEmail())),
+                                roleService.getRoleByUserId(user.getId())
     );
 }
-
-
 
 /**
  * <p>

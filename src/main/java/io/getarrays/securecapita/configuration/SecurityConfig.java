@@ -32,10 +32,18 @@ public class SecurityConfig
 
 
 private final BCryptPasswordEncoder encoder;
+
 private final CustomAccessDeniedHandler customAccessDeniedHandler;
+
 private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
+/**
+ * Spring just finds class that implements UserDetailsService (UserRepositoryImpl in the case of this application).
+ */
 private final UserDetailsService userDetailsService;
+
 private final CustomAuthorizationFilter customAuthorizationFilter;
+
 private static final String[] PUBLIC_URLS = {"/api/v1/user/verify/password/**",
                                              "/api/v1/user/login/**",
                                              "/api/v1/user/verify/code/**",
@@ -60,8 +68,9 @@ private static final String[] PUBLIC_URLS = {"/api/v1/user/verify/password/**",
                                              "/#/register/**",
                                              "/**",
                                              "/login/**",
-                                             "/register/**"
-};
+                                             "/register/**"};
+
+
 
 /**
  * <p>

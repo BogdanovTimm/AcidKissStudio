@@ -6,7 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.InvalidClaimException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
-import io.getarrays.securecapita.domain.UserPrincipal;
+import io.getarrays.securecapita.domain.UserPlusItsRoles;
 import io.getarrays.securecapita.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -51,50 +51,53 @@ import static java.util.stream.Collectors.toList;
 public class TokenProvider
 {
 
-
-
 public static final String AUTHORITIES = "authorities";
+
 private static final String GET_ARRAYS_LLC = "GET_ARRAYS_LLC";
+
 private static final String CUSTOMER_MANAGEMENT_SERVICE = "CUSTOMER_MANAGEMENT_SERVICE";
+
 private static final long ACCESS_TOKEN_EXPIRATION_TIME = 432_000_000; //1_800_000;
+
 private static final long REFRESH_TOKEN_EXPIRATION_TIME = 432_000_000; // 5 days
+
 public static final String TOKEN_CANNOT_BE_VERIFIED = "Token cannot be verified";
+
 @Value("${jwt.secret}")
 private String secret;
+
 private final UserService userService;
+
+
 
 /**
  * Creates Access Token that is needed for accessing web pages on the website
  */
-public String createAccessToken(UserPrincipal userPrincipal)
+public String createAccessToken(UserPlusItsRoles userPrincipal)
 {
     return JWT.create()
               .withIssuer(GET_ARRAYS_LLC)
               .withAudience(CUSTOMER_MANAGEMENT_SERVICE)
               .withIssuedAt(new Date())
-              .withSubject(String.valueOf(userPrincipal.getUser().getId()))
+              .withSubject(String.valueOf(userPrincipal.getUserDTOPlusItsRole().getId()))
               .withArrayClaim(AUTHORITIES, getClaimsFromUser(userPrincipal))
               .withExpiresAt(new Date(currentTimeMillis() + ACCESS_TOKEN_EXPIRATION_TIME))
               .sign(HMAC512(secret.getBytes()));
 }
 
-
-
 /**
  * Creates Refresh Token that is needed for getting Access Tokens
  */
-public String createRefreshToken(UserPrincipal userPrincipal)
+public String createRefreshToken(UserPlusItsRoles userPrincipal)
 {
     return JWT.create()
               .withIssuer(GET_ARRAYS_LLC)
               .withAudience(CUSTOMER_MANAGEMENT_SERVICE)
               .withIssuedAt(new Date())
-              .withSubject(String.valueOf(userPrincipal.getUser().getId()))
+              .withSubject(String.valueOf(userPrincipal.getUserDTOPlusItsRole().getId()))
               .withExpiresAt(new Date(currentTimeMillis() + REFRESH_TOKEN_EXPIRATION_TIME))
               .sign(HMAC512(secret.getBytes()));
 }
-
-
 
 /**
  * <p>
@@ -131,8 +134,6 @@ public Long getSubject(String token, HttpServletRequest request)
     }
 }
 
-
-
 /**
  * <p>
  * Returns a List of permissions from given token.
@@ -153,8 +154,6 @@ public List<GrantedAuthority> getAuthorities(String token)
     return stream(claims).map(SimpleGrantedAuthority::new).collect(toList());
 }
 
-
-
 /**
  * Returns Username Password Authentication Token. It is needed for Custom Authorizaton Filter to work
  */
@@ -163,13 +162,12 @@ public Authentication getAuthentication(Long userId,
                                         HttpServletRequest request
 )
 {
-    UsernamePasswordAuthenticationToken userPasswordAuthToken = new UsernamePasswordAuthenticationToken(userService.getUserById(
-                                                                                                                                userId), null, authorities);
+    UsernamePasswordAuthenticationToken userPasswordAuthToken = new UsernamePasswordAuthenticationToken(userService.getUserById(userId),
+                                                                                                        null,
+                                                                                                        authorities);
     userPasswordAuthToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
     return userPasswordAuthToken;
 }
-
-
 
 /**
  * <p>
@@ -196,8 +194,6 @@ public boolean isTokenValid(Long userId, String token)
     return !Objects.isNull(userId) && !isTokenExpired(verifier, token);
 }
 
-
-
 /**
  * Checks whether given token has expired
  */
@@ -206,8 +202,6 @@ private boolean isTokenExpired(JWTVerifier verifier, String token)
     Date expiration = verifier.verify(token).getExpiresAt();
     return expiration.before(new Date());
 }
-
-
 
 /**
  * <p>
@@ -223,12 +217,10 @@ private boolean isTokenExpired(JWTVerifier verifier, String token)
  * </ol>
  * </p>
  */
-private String[] getClaimsFromUser(UserPrincipal userPrincipal)
+private String[] getClaimsFromUser(UserPlusItsRoles userPrincipal)
 {
     return userPrincipal.getAuthorities().stream().map(GrantedAuthority::getAuthority).toArray(String[]::new);
 }
-
-
 
 /**
  * <p>
@@ -248,8 +240,6 @@ private String[] getClaimsFromToken(String token)
     JWTVerifier verifier = getJWTVerifier();
     return verifier.verify(token).getClaim(AUTHORITIES).asArray(String.class);
 }
-
-
 
 /**
  * Creates JWT verifier

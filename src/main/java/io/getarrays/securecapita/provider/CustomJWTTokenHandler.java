@@ -48,7 +48,7 @@ import static java.util.stream.Collectors.toList;
  */
 @Component
 @RequiredArgsConstructor
-public class TokenProvider
+public class CustomJWTTokenHandler
 {
 
 public static final String AUTHORITIES = "authorities";

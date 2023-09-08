@@ -122,7 +122,6 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception
     http.authorizeHttpRequests(request->request.anyRequest()
                                                .authenticated()
     );
-    System.out.println("CORS was checked");
     return http.build();
 }
 

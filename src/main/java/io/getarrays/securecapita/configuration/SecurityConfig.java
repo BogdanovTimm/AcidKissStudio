@@ -26,14 +26,21 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
-public class SecurityConfig
-{
+public class SecurityConfig {
+
     private final BCryptPasswordEncoder encoder;
+
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
+
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
+    /**
+     * Spring just finds class that implements UserDetailsService (UserRepositoryImpl in the case of this application).
+     */
     private final UserDetailsService userDetailsService;
+
     private final CustomAuthorizationFilter customAuthorizationFilter;
-    
+
     private static final String[] PUBLIC_URLS = {"/api/v1/user/verify/password/**",
                                                  "/api/v1/user/login/**",
                                                  "/api/v1/user/verify/code/**",
@@ -43,7 +50,6 @@ public class SecurityConfig
                                                  "/api/v1/user/refresh/token/**",
                                                  "/api/v1/user/image/**",
                                                  "/api/v1/user/new/password/**",
-                                                 // #
                                                  "/#/api/v1/user/verify/password/**",
                                                  "/#/api/v1/user/login/**",
                                                  "/#/api/v1/user/verify/code/**",
@@ -55,75 +61,76 @@ public class SecurityConfig
                                                  "/#/api/v1/user/new/password/**",
                                                  "/#/**",
                                                  "/#/login/**",
+                                                 "/error",
                                                  "/#/register/**",
                                                  "/**",
                                                  "/login/**",
-                                                 "/register/**"
-    };
+                                                 "/register/**"};
+
+
+
     /**
-     <p>
-     Sets:
-     <ul>
-     <li>
-     CSRF
-     </li>
-     <li>
-     CORS
-     </li>
-     <li>
-     Webpages that can be seen without signing in
-     </li>
-     <li>
-     Permissions for HTTP-Methods for some webpages
-     </li>
-     <li>
-     Custom handler for Access Denied Error
-     </li>
-     <li>
-     Custom handler for non-logged user
-     </li>
-     <li>
-     Custom filter that checks every HTTP-request
-     </li>
-     </ul>
-     </p>
+     * <p>
+     * Sets:
+     * <ul>
+     * <li>
+     * CSRF
+     * </li>
+     * <li>
+     * CORS
+     * </li>
+     * <li>
+     * Webpages that can be seen without signing in
+     * </li>
+     * <li>
+     * Permissions for HTTP-Methods for some webpages
+     * </li>
+     * <li>
+     * Custom handler for Access Denied Error
+     * </li>
+     * <li>
+     * Custom handler for non-logged user
+     * </li>
+     * <li>
+     * Custom filter that checks every HTTP-request
+     * </li>
+     * </ul>
+     * </p>
      */
     @Bean
-    public SecurityFilterChain filterChain (HttpSecurity http)
-    throws Exception
-    { // Feel free to use the Lambda notation
-        http.csrf (csrf -> csrf.disable ()) // We disable csrf because in REST API we don't need ti
-            .cors (withDefaults ());
-            //.cors ().disable ();
-        http.sessionManagement (session -> session.sessionCreationPolicy (STATELESS));
-        http.authorizeHttpRequests (request -> request.requestMatchers (PUBLIC_URLS).permitAll ());
-        http.authorizeHttpRequests (request -> request.requestMatchers (OPTIONS).permitAll ());
-        http.authorizeHttpRequests (request -> request.requestMatchers (DELETE,
-                                                                        "/api/v1/user/delete/**"
-                                                                       )
-                                                      .hasAuthority ("DELETE:USER"));
-        http.authorizeHttpRequests (request -> request.requestMatchers (DELETE,
-                                                                        "/api/v1/customer/delete/**"
-                                                                       )
-                                                      .hasAuthority ("DELETE:CUSTOMER"));
-        http.exceptionHandling (exception -> exception.accessDeniedHandler (customAccessDeniedHandler) // Sets custom handler for Access Denied Error
-                                                      .authenticationEntryPoint (customAuthenticationEntryPoint)); // Sets custom handler for non-logged user
-        http.addFilterBefore (customAuthorizationFilter, UsernamePasswordAuthenticationFilter.class); // Adds filter that checks user's permissions for every HTTP-Request
-        http.authorizeHttpRequests (request -> request.anyRequest ()
-                                                      .authenticated ()
-                                   );
-        System.out.println ("CORS was checked");
-        return http.build ();
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf(csrf -> csrf.disable()) // We disable csrf because in REST API we don't need ti
+            .cors(withDefaults());
+        http.sessionManagement(session -> session.sessionCreationPolicy(STATELESS));
+        http.authorizeHttpRequests(request -> request.requestMatchers(PUBLIC_URLS).permitAll());
+        http.authorizeHttpRequests(request -> request.requestMatchers(OPTIONS).permitAll());
+        http.authorizeHttpRequests(request -> request.requestMatchers(DELETE,
+                                                                      "/api/v1/user/delete/**")
+                                                     .hasAuthority("DELETE:USER")
+        );
+        http.authorizeHttpRequests(request -> request.requestMatchers(DELETE,
+                                                                      "/api/v1/customer/delete/**")
+                                                     .hasAuthority("DELETE:CUSTOMER")
+        );
+        http.exceptionHandling(exception -> exception.accessDeniedHandler(customAccessDeniedHandler) // Sets custom handler for Access Denied Error
+                                                     .authenticationEntryPoint(customAuthenticationEntryPoint)); // Sets custom handler for non-logged user
+        http.addFilterBefore(customAuthorizationFilter, UsernamePasswordAuthenticationFilter.class); // Adds filter that checks user's permissions for every HTTP-Request
+        http.authorizeHttpRequests(request -> request.anyRequest()
+                                                     .authenticated()
+        );
+        return http.build();
     }
+
+
+
     /**
-     Sets encoder for User's passwords
+     * Sets encoder for User's passwords
      */
     @Bean
-    public AuthenticationManager authenticationManager ()
-    {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider ();
-        authProvider.setUserDetailsService (userDetailsService);
-        authProvider.setPasswordEncoder (encoder);
-        return new ProviderManager (authProvider);
+    public AuthenticationManager authenticationManager() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(encoder);
+        return new ProviderManager(authProvider);
     }
 }

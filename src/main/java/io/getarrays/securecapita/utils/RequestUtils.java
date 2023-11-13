@@ -3,16 +3,20 @@ package io.getarrays.securecapita.utils;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
- @author Junior RT
- @version 1.0
- @license Get Arrays, LLC (https://getarrays.io)
- @since 3/21/2023 */
-public class RequestUtils
-{
+ * @author Junior RT
+ * @version 1.0
+ * @license Get Arrays, LLC (https://getarrays.io)
+ * @since 3/21/2023
+ */
+public class RequestUtils {
+
     public static final String USER_AGENT_HEADER = "user-agent";
+
     public static final String X_FORWARDED_FOR_HEADER = "X-FORWARDED-FOR";
-    public static String getIpAddress (HttpServletRequest request)
-    {
+
+
+
+    public static String getIpAddress(HttpServletRequest request) {
         String ipAddress = "Unknown IP";
         if (request != null) {
             ipAddress = request.getHeader(X_FORWARDED_FOR_HEADER);
@@ -22,12 +26,11 @@ public class RequestUtils
         }
         return ipAddress;
     }
-    
+
     /**
      * Gets user's device from HTTP-Request (need to be checked)
      */
-    public static String getDevice (HttpServletRequest request)
-    {
+    public static String getDevice(HttpServletRequest request) {
         return "Test";
         /*
         UserAgentAnalyzer userAgentAnalyzer = UserAgentAnalyzer.newBuilder ()

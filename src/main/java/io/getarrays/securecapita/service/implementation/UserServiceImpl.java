@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import static io.getarrays.securecapita.dtomapper.UserDTOMapper.fromUser;
+import static io.getarrays.securecapita.dtomapper.UserDTOMapper.fromUserWithRole;
 
 /**
  <p>
@@ -286,7 +286,7 @@ public class UserServiceImpl implements UserService {
      </p>
      */
     private UserDTO mapToUserDTO(User user) {
-        return fromUser(user, roleRoleRepository.getRoleByUserId(user.getId()));
+        return fromUserWithRole(user, roleRoleRepository.getRoleByUserId(user.getId()));
     }
 }
 

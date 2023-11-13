@@ -1,6 +1,7 @@
 package io.getarrays.securecapita.filter;
 
-import io.getarrays.securecapita.provider.TokenProvider;
+import io.getarrays.securecapita.provider.CustomJWTTokenHandler;
+import io.getarrays.securecapita.utils.ExceptionUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import static io.getarrays.securecapita.utils.ExceptionUtils.processError;
 import static java.util.Arrays.asList;
@@ -32,7 +34,9 @@ public class CustomAuthorizationFilter
                                        extends
                                        OncePerRequestFilter // This means that this filter will be called only once for each HTTP_Request
 {
+
     private static final String TOKEN_PREFIX = "Bearer ";
+
     /**
      * A list of URLs without [**] (or they will not work)
      */
@@ -42,7 +46,8 @@ public class CustomAuthorizationFilter
                                                    "/api/v1/user/register",
                                                    "/api/v1/user/refresh/token",
                                                    "/api/v1/user/image",
-                                                   // #
+                                                   "/",
+                                                   "/login",
                                                    "/#/api/v1/user/new/password",
                                                    "/#/api/v1/user/login",
                                                    "/#/api/v1/user/verify/code",
@@ -53,8 +58,13 @@ public class CustomAuthorizationFilter
                                                    "/#/login",
                                                    "/#/register"
     };
+
     private static final String HTTP_OPTIONS_METHOD = "OPTIONS";
-    private final TokenProvider tokenProvider;
+
+    private final CustomJWTTokenHandler customJWTTokenHandler;
+
+
+
     /**
      * <p>
      * Checks every HTTP-Request:
@@ -82,48 +92,42 @@ public class CustomAuthorizationFilter
      * </p>
      */
     @Override
-    protected void doFilterInternal (HttpServletRequest request,
-                                     HttpServletResponse response,
-                                     FilterChain filter
-    )
-      throws ServletException,
-      IOException
-    {
-        try
-        {
-            String token = getToken (request);
-            Long userId = getUserId (request);
-            if (tokenProvider.isTokenValid (userId, token))
-            {
-                List<GrantedAuthority> authorities = tokenProvider.getAuthorities (token);
-                Authentication authentication = tokenProvider.getAuthentication (userId, authorities, request);
-                SecurityContextHolder.getContext ().setAuthentication (authentication);
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filter)
+                                                        throws ServletException,
+                                                        IOException {
+        try {
+            String token = getToken(request);
+            Long userId = getUserId(request);
+            if (customJWTTokenHandler.isTokenValid(userId, token)) {
+                List<GrantedAuthority> authorities = customJWTTokenHandler.getAuthorities(token);
+                Authentication authentication = customJWTTokenHandler.getAuthentication(userId, authorities, request);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            } else {
+                SecurityContextHolder.clearContext();
             }
-            else
-            {
-                SecurityContextHolder.clearContext ();
-            }
-            filter.doFilter (request, response);
-        } catch (Exception exception)
-        {
-            log.error (exception.getMessage ());
-            processError (request, response, exception);
+            filter.doFilter(request, response);
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            ExceptionUtils.processError(request, response, exception);
         }
     }
+
     /**
      * Checker for every HTTP-Request: whether HTTP-Request needs to be checked further by this CustomAuthorizaitonFilter
      */
     @Override
-    protected boolean shouldNotFilter (HttpServletRequest request)
-                                                                   throws ServletException
-    {
-        return request.getHeader (AUTHORIZATION) == null ||
-               !request.getHeader (AUTHORIZATION)
-                       .startsWith (TOKEN_PREFIX) ||
-               request.getMethod ()
-                      .equalsIgnoreCase (HTTP_OPTIONS_METHOD) ||
-               asList (PUBLIC_ROUTES).contains (request.getRequestURI ());
+    protected boolean shouldNotFilter(HttpServletRequest request)
+                                                                  throws ServletException {
+        return request.getHeader(AUTHORIZATION) == null ||
+               !request.getHeader(AUTHORIZATION)
+                       .startsWith(TOKEN_PREFIX) ||
+               request.getMethod()
+                      .equalsIgnoreCase(HTTP_OPTIONS_METHOD) ||
+               asList(PUBLIC_ROUTES).contains(request.getRequestURI());
     }
+
     /**
      * <p>
      * Returns User's id:
@@ -140,10 +144,10 @@ public class CustomAuthorizationFilter
      * </ol>
      * </p>
      */
-    private Long getUserId (HttpServletRequest request)
-    {
-        return tokenProvider.getSubject (getToken (request), request);
+    private Long getUserId(HttpServletRequest request) {
+        return customJWTTokenHandler.getSubject(getToken(request), request);
     }
+
     /**
      * <p>
      * Get JWT-Access Token from Header of HTTP-Request if it exists:
@@ -165,11 +169,10 @@ public class CustomAuthorizationFilter
      * </ol>
      * </p>
      */
-    private String getToken (HttpServletRequest request)
-    {
-        return ofNullable (request.getHeader (AUTHORIZATION))
-                                                             .filter (header -> header.startsWith (TOKEN_PREFIX))
-                                                             .map (token -> token.replace (TOKEN_PREFIX, EMPTY))
-                                                             .get ();
+    private String getToken(HttpServletRequest request) {
+        return Optional.ofNullable(request.getHeader(AUTHORIZATION))
+                       .filter(header -> header.startsWith(TOKEN_PREFIX))
+                       .map(token -> token.replace(TOKEN_PREFIX, EMPTY))
+                       .get();
     }
 }

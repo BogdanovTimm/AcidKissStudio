@@ -19,64 +19,74 @@ import static java.util.stream.IntStream.range;
 import static org.apache.commons.lang3.time.DateFormatUtils.*;
 
 /**
- Report of all customers from home page as .xsl file
+ * Report of all customers from home page as .xsl file
  */
 @Slf4j
-public class CustomerReport {
+public class CustomerReport
+{
     public static final String DATE_FORMATTER = "yyyy-MM-dd hh:mm:ss";
     private XSSFWorkbook workbook;
     private XSSFSheet sheet;
     private List<Customer> customers;
-    private static String[] HEADERS = { "ID", "Name", "Email", "Type", "Status", "Address", "Phone", "Created At" };
-
-    public CustomerReport(List<Customer> customers) {
+    private static String[] HEADERS = {"ID", "Name", "Email", "Type", "Status", "Address", "Phone", "Created At"
+    };
+    
+    public CustomerReport (List<Customer> customers)
+    {
         this.customers = customers;
-        workbook = new XSSFWorkbook();
-        sheet = workbook.createSheet("Customers");
-        setHeaders();
+        workbook = new XSSFWorkbook ();
+        sheet = workbook.createSheet ("Customers");
+        setHeaders ();
     }
-
-    private void setHeaders() {
-        Row headerRow = sheet.createRow(0);
-        CellStyle style = workbook.createCellStyle();
-        XSSFFont font = workbook.createFont();
-        font.setBold(true);
-        font.setFontHeight(14);
-        style.setFont(font);
-        range(0, HEADERS.length).forEach(index -> {
-            Cell cell = headerRow.createCell(index);
-            cell.setCellValue(HEADERS[index]);
-            cell.setCellStyle(style);
+    
+    private void setHeaders ()
+    {
+        Row headerRow = sheet.createRow (0);
+        CellStyle style = workbook.createCellStyle ();
+        XSSFFont font = workbook.createFont ();
+        font.setBold (true);
+        font.setFontHeight (14);
+        style.setFont (font);
+        range (0, HEADERS.length).forEach (index ->
+        {
+            Cell cell = headerRow.createCell (index);
+            cell.setCellValue (HEADERS[index]);
+            cell.setCellStyle (style);
         });
     }
-
-    public InputStreamResource export() {
-        return generateReport();
+    
+    public InputStreamResource export ()
+    {
+        return generateReport ();
     }
-
-    private InputStreamResource generateReport() {
-        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            CellStyle style = workbook.createCellStyle();
-            XSSFFont font = workbook.createFont();
-            font.setFontHeight(10);
-            style.setFont(font);
+    
+    private InputStreamResource generateReport ()
+    {
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream ())
+        {
+            CellStyle style = workbook.createCellStyle ();
+            XSSFFont font = workbook.createFont ();
+            font.setFontHeight (10);
+            style.setFont (font);
             int rowIndex = 1;
-            for(Customer customer: customers) {
-                Row row = sheet.createRow(rowIndex++);
-                row.createCell(0).setCellValue(customer.getId());
-                row.createCell(1).setCellValue(customer.getName());
-                row.createCell(2).setCellValue(customer.getEmail());
-                row.createCell(3).setCellValue(customer.getType());
-                row.createCell(4).setCellValue(customer.getStatus());
-                row.createCell(5).setCellValue(customer.getAddress());
-                row.createCell(6).setCellValue(customer.getPhone());
-                row.createCell(7).setCellValue(format(customer.getCreatedAt(), DATE_FORMATTER));
+            for (Customer customer : customers)
+            {
+                Row row = sheet.createRow (rowIndex++);
+                row.createCell (0).setCellValue (customer.getId ());
+                row.createCell (1).setCellValue (customer.getName ());
+                row.createCell (2).setCellValue (customer.getEmail ());
+                row.createCell (3).setCellValue (customer.getType ());
+                row.createCell (4).setCellValue (customer.getStatus ());
+                row.createCell (5).setCellValue (customer.getAddress ());
+                row.createCell (6).setCellValue (customer.getPhone ());
+                row.createCell (7).setCellValue (format (customer.getCreatedAt (), DATE_FORMATTER));
             }
-            workbook.write(out);
-            return new InputStreamResource(new ByteArrayInputStream(out.toByteArray()));
-        } catch (Exception exception) {
-            log.error(exception.getMessage());
-            throw new ApiException("Unable to export report file");
+            workbook.write (out);
+            return new InputStreamResource (new ByteArrayInputStream (out.toByteArray ()));
+        } catch (Exception exception)
+        {
+            log.error (exception.getMessage ());
+            throw new ApiException ("Unable to export report file");
         }
     }
 }

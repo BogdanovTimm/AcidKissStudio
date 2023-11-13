@@ -9,7 +9,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 /**
- Class that automatically calls onNewUserEvent () every time when NewUserEvent is created
+ * Class that automatically calls onNewUserEvent () every time when NewUserEvent is created
  */
 @Component
 @RequiredArgsConstructor
@@ -24,6 +24,6 @@ public class NewUserEventListener
                                    event.getType (),
                                    RequestUtils.getDevice (request),
                                    RequestUtils.getIpAddress (request)
-                                  );
+        );
     }
 }

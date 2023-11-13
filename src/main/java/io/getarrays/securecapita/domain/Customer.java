@@ -13,29 +13,38 @@ import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.FetchType.EAGER;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
+@Entity
 @Setter
 @Getter
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonInclude (NON_DEFAULT)
-@Entity
+@JsonInclude(NON_DEFAULT)
 public class Customer
 {
-    @Id
-    @GeneratedValue (strategy = IDENTITY)
-    private Long id;
-    private String name;
-    private String email;
-    private String type;
-    private String status;
-    private String address;
-    private String phone;
-    private String imageUrl;
-    private Date createdAt;
-    @OneToMany (mappedBy = "customer",
-                fetch = EAGER,
-                cascade = ALL
-    )
-    private Collection<Invoice> invoices;
+
+@Id
+@GeneratedValue(strategy = IDENTITY)
+private Long id;
+
+private String name;
+
+private String email;
+
+private String type;
+
+private String status;
+
+private String address;
+
+private String phone;
+
+private String imageUrl;
+
+private Date createdAt;
+
+@OneToMany(mappedBy = "customer",
+           fetch = EAGER,
+           cascade = ALL)
+private Collection<Invoice> invoices;
 }

@@ -28,6 +28,7 @@ import static java.util.Objects.requireNonNull;
 @RequiredArgsConstructor
 @Slf4j
 public class RoleRepositoryImpl implements RoleRepository<Role> {
+
     private final NamedParameterJdbcTemplate jdbc;
 
     @Override

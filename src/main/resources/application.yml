@@ -2,13 +2,12 @@ server:
     port: 80
 spring:
     profiles:
-        #active: @spring.profiles.active@
         active: dev
     mail:
         host: smtp.gmail.com
         port: 587
         username: bogdanovtimm@gmail.com
-        password: rxuirozapnegszbz
+        # password: will be given as an argument at application start
         properties:
             mail:
                 smtp:

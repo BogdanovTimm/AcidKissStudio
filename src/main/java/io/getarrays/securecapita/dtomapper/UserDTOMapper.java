@@ -24,7 +24,7 @@ public class UserDTOMapper {
      */
     public static UserDTO fromUser(User user) {
         UserDTO userDTO = new UserDTO();
-        BeanUtils.copyProperties(user, userDTO); // Automatically maps variables and their values from [User] to [UserDTO]
+        BeanUtils.copyProperties(user, userDTO); // Automatically maps variables and their values from User to UserDTO
         return userDTO;
     }
     /**

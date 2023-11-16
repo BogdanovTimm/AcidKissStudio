@@ -8,12 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
-/**
- * @author Junior RT
- * @version 1.0
- * @license Get Arrays, LLC (https://getarrays.io)
- * @since 12/26/2022
- */
+
 
 @Service
 @RequiredArgsConstructor

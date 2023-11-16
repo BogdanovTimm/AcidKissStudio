@@ -10,13 +10,6 @@ import java.time.LocalDateTime;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_DEFAULT;
 
-/**
- * @author Junior RT
- * @version 1.0
- * @license Get Arrays, LLC (https://getarrays.io)
- * @since 3/21/2023
- */
-
 @Data
 @SuperBuilder
 @NoArgsConstructor

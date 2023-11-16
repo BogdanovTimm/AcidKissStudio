@@ -2,12 +2,7 @@ package io.getarrays.securecapita.utils;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-/**
- * @author Junior RT
- * @version 1.0
- * @license Get Arrays, LLC (https://getarrays.io)
- * @since 3/21/2023
- */
+
 public class RequestUtils {
 
     public static final String USER_AGENT_HEADER = "user-agent";

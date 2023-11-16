@@ -6,12 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * @author Junior RT
- * @version 1.0
- * @license Get Arrays, LLC (https://getarrays.io)
- * @since 3/21/2023
- */
+
 
 public class UserEventRowMapper implements RowMapper<UserEvent> {
     @Override

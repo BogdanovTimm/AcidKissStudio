@@ -5,12 +5,7 @@ import io.getarrays.securecapita.domain.Invoice;
 import io.getarrays.securecapita.domain.Stats;
 import org.springframework.data.domain.Page;
 
-/**
- * @author Junior RT
- * @version 1.0
- * @license Get Arrays, LLC (https://getarrays.io)
- * @since 5/11/2023
- */
+
 public interface CustomerService {
     // Customer functions
     Customer createCustomer(Customer customer);

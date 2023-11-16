@@ -4,13 +4,6 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * @author Junior RT
- * @version 1.0
- * @license Get Arrays, LLC (https://getarrays.io)
- * @since 3/16/2023
- */
-
 @Getter
 @Setter
 public class UpdatePasswordForm {

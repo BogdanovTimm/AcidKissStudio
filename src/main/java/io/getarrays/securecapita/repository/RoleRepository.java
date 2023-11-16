@@ -4,12 +4,7 @@ import io.getarrays.securecapita.domain.Role;
 
 import java.util.Collection;
 
-/**
- * @author Junior RT
- * @version 1.0
- * @license Get Arrays, LLC (https://getarrays.io)
- * @since 8/28/2022
- */
+
 public interface RoleRepository<T extends Role> {
     /* Basic CRUD Operations */
     T create(T data);

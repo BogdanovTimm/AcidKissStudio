@@ -15,12 +15,7 @@ import static io.getarrays.securecapita.query.EventQuery.INSERT_EVENT_BY_USER_EM
 import static io.getarrays.securecapita.query.EventQuery.SELECT_EVENTS_BY_USER_ID_QUERY;
 import static java.util.Map.of;
 
-/**
- * @author Junior RT
- * @version 1.0
- * @license Get Arrays, LLC (https://getarrays.io)
- * @since 3/21/2023
- */
+
 
 @Repository
 @RequiredArgsConstructor

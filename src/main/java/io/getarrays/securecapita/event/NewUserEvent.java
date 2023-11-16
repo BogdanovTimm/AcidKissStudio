@@ -5,13 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.context.ApplicationEvent;
 
-/**
- * @author Junior RT
- * @version 1.0
- * @license Get Arrays, LLC (https://getarrays.io)
- * @since 3/21/2023
- */
-
 @Getter
 @Setter
 public class NewUserEvent

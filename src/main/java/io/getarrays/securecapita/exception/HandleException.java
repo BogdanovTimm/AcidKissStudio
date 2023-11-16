@@ -44,9 +44,7 @@ public class HandleException
                                                               Object body,
                                                               HttpHeaders headers,
                                                               HttpStatusCode statusCode,
-                                                              WebRequest request
-    )
-    {
+                                                              WebRequest request) {
         log.error (exception.getMessage ());
         return new ResponseEntity<> (
                                      HttpResponse.builder ()

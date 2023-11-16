@@ -12,8 +12,8 @@ spring:
     #    exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
     datasource:
         url: jdbc:mysql://localhost:3306/securecapita
-        #password: test123!
-        #username: test
+        password: test123!
+        username: test
         hikari:
            max-lifetime: 20000
     jpa:

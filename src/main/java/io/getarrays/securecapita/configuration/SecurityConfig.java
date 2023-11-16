@@ -50,22 +50,23 @@ public class SecurityConfig {
                                                  "/api/v1/user/refresh/token/**",
                                                  "/api/v1/user/image/**",
                                                  "/api/v1/user/new/password/**",
-                                                 "/#/api/v1/user/verify/password/**",
-                                                 "/#/api/v1/user/login/**",
-                                                 "/#/api/v1/user/verify/code/**",
-                                                 "/#/api/v1/user/register/**",
-                                                 "/#/api/v1/user/resetpassword/**",
-                                                 "/#/api/v1/user/verify/account/**",
-                                                 "/#/api/v1/user/refresh/token/**",
-                                                 "/#/api/v1/user/image/**",
-                                                 "/#/api/v1/user/new/password/**",
-                                                 "/#/**",
-                                                 "/#/login/**",
                                                  "/error",
-                                                 "/#/register/**",
-                                                 "/**",
-                                                 "/login/**",
-                                                 "/register/**"};
+            //"/#/api/v1/user/verify/password/**",
+            //"/#/api/v1/user/login/**",
+            //"/#/api/v1/user/verify/code/**",
+            //"/#/api/v1/user/register/**",
+            //"/#/api/v1/user/resetpassword/**",
+            //"/#/api/v1/user/verify/account/**",
+            //"/#/api/v1/user/refresh/token/**",
+            //"/#/api/v1/user/image/**",
+            //"/#/api/v1/user/new/password/**",
+            //"/#/**",
+            //"/#/login/**",
+            //"/#/register/**",
+            //"/**",
+            //"/login/**",
+            //"/register/**"
+    };
 
 
 

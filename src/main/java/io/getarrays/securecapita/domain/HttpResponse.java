@@ -10,9 +10,7 @@ import java.util.Map;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_DEFAULT;
 
 /**
- <p>
  Custom representation of JSON code for HTTP-Response
- </p>
  */
 @Data
 @SuperBuilder

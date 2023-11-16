@@ -21,12 +21,7 @@ import static io.getarrays.securecapita.query.CustomerQuery.STATS_QUERY;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.springframework.data.domain.PageRequest.of;
 
-/**
- * @author Junior RT
- * @version 1.0
- * @license Get Arrays, LLC (https://getarrays.io)
- * @since 5/11/2023
- */
+
 
 @Service
 @Transactional

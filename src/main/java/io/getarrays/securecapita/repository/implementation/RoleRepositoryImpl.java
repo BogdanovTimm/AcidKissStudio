@@ -17,13 +17,6 @@ import static io.getarrays.securecapita.query.RoleQuery.*;
 import static java.util.Map.of;
 import static java.util.Objects.requireNonNull;
 
-/**
- * @author Junior RT
- * @version 1.0
- * @license Get Arrays, LLC (https://getarrays.io)
- * @since 8/28/2022
- */
-
 @Repository
 @RequiredArgsConstructor
 @Slf4j

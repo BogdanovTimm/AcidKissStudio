@@ -1,12 +1,5 @@
 package io.getarrays.securecapita.enumeration;
 
-/**
- * @author Junior RT
- * @version 1.0
- * @license Get Arrays, LLC (https://getarrays.io)
- * @since 3/21/2023
- */
-
 public enum EventType {
     LOGIN_ATTEMPT("You tried to log in"),
     LOGIN_ATTEMPT_FAILURE("You tried to log in and you failed"),
